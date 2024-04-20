@@ -7,7 +7,6 @@ ARG DB_DATABASE
 ARG DB_USERNAME
 ARG DB_PASSWORD
 
-
 # Instala las dependencias necesarias para Laravel
 RUN apt-get update && apt-get install -y \
     libzip-dev \
@@ -32,6 +31,15 @@ RUN apt-get update && apt-get install -y \
 # Instala Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Copia el código de tu aplicación Laravel al directorio /var/www/html
+COPY src /var/www/scomputacion
+
+# Configura el directorio de trabajo
+WORKDIR /var/www/scomputacion
+
+# Copia el archivo composer.json
+COPY src/composer.json /var/www/scomputacion/composer.json
+
 # Instala extensiones de PHP
 RUN docker-php-ext-install zip pdo_mysql gd pdo_pgsql intl xsl opcache mysqli pdo pdo_mysql soap
 
@@ -44,16 +52,6 @@ RUN pecl install amqp && docker-php-ext-enable amqp
 # Configura Apache
 RUN a2enmod rewrite
 
-# Copia el código de tu aplicación Laravel al directorio /var/www/html
-COPY . /var/www/html
-
-# Configura el directorio de trabajo
-RUN mkdir -p /var/www/scomputacion
-RUN rm -r /var/www/html
-WORKDIR /var/www/scomputacion
-COPY ./comandos.txt /home/comandos.sh
-RUN chmod +x /home/comandos.sh
-
 # Ejecutar composer install
 RUN composer install
 
@@ -62,10 +60,8 @@ RUN php artisan migrate:fresh --seed
 RUN php artisan key:generate
 RUN php artisan optimize:clear
 
-
 # Expone el puerto 80 para que puedas acceder a la aplicación desde tu navegador
 EXPOSE 80
 
 # Inicia Apache cuando se inicia el contenedor
 CMD ["apache2-foreground"]
-
