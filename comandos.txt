@@ -1,0 +1,6 @@
+chown -R www-data:www-data /var/www/scomputacion/public
+chown -R www-data:www-data /var/www/scomputacion/storage/ /var/www/scomputacion/bootstrap/
+ln -s /var/www/scomputacion/public /var/www/html
+php artisan migrate:fresh --seed
+php artisan key:generate
+php artisan optimize:clear
