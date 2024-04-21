@@ -52,8 +52,8 @@ RUN pecl install amqp && docker-php-ext-enable amqp
 # Configura Apache
 RUN a2enmod rewrite
 
-# Ejecutar composer install
-RUN composer install
+# # Ejecutar composer install
+# RUN composer install
 
 # Ejecutar comandos de Artisan de Laravel
 # RUN php artisan migrate --seed --force
