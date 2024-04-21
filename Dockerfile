@@ -56,7 +56,7 @@ RUN a2enmod rewrite
 # Ejecutar composer install
 RUN composer install
 
-Ejecutar comandos de Artisan de Laravel
+# Ejecutar comandos de Artisan de Laravel
 RUN php artisan migrate --seed --force
 RUN php artisan key:generate
 RUN php artisan optimize:clear
