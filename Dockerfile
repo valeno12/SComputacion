@@ -57,8 +57,8 @@ RUN a2enmod rewrite
 RUN composer install
 
 #Permisoschown -R www-data:www-data /var/www/scomputacion/public
-RUN chown -R www-data:www-data 
-RUN /var/www/scomputacion/storage/ /var/www/scomputacion/bootstrap/
+RUN chown -R www-data:www-data /var/www/scomputacion/public
+RUN chown -R www-data:www-data /var/www/scomputacion/storage/ /var/www/scomputacion/bootstrap/
 RUN ln -s /var/www/scomputacion/public /var/www/html
 
 # Ejecutar comandos de Artisan de Laravel
