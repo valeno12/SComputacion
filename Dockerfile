@@ -57,9 +57,11 @@ RUN a2enmod rewrite
 RUN composer install
 
 # Ejecutar comandos de Artisan de Laravel
+RUN php artisan optimize
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
 RUN php artisan migrate --seed --force
-RUN php artisan key:generate
-RUN php artisan optimize:clear
 
 # Expone el puerto 80 para que puedas acceder a la aplicación desde tu navegador
 EXPOSE 80
