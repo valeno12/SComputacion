@@ -56,10 +56,6 @@ RUN a2enmod rewrite
 # Ejecutar composer install
 RUN composer install
 
-#Permisoschown -R www-data:www-data /var/www/scomputacion/public
-RUN chown -R www-data:www-data /var/www/scomputacion/public
-RUN chown -R www-data:www-data /var/www/scomputacion/storage/ /var/www/scomputacion/bootstrap/
-RUN ln -s /var/www/scomputacion/public /var/www/html
 
 # Ejecutar comandos de Artisan de Laravel
 RUN php artisan optimize
@@ -71,5 +67,8 @@ RUN php artisan migrate:fresh --seed --force
 # Expone el puerto 80 para que puedas acceder a la aplicación desde tu navegador
 EXPOSE 80
 
-# Inicia Apache cuando se inicia el contenedor
-CMD ["apache2-foreground"]
+# Cambiar permisos de directorios y crear enlace simbólico
+CMD chown -R www-data:www-data /var/www/scomputacion/public && \
+    chown -R www-data:www-data /var/www/scomputacion/storage/ /var/www/scomputacion/bootstrap/ && \
+    ln -s /var/www/scomputacion/public /var/www/html && \
+    apache2-foreground
